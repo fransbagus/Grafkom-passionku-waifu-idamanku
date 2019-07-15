@@ -1,0 +1,86 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<glut.h>
+
+int form = 0;
+float xpoint = 0, ypoint = 0;
+bool klik = false, cek = false;
+
+struct dots* point = NULL, * head = NULL, * curr = NULL;
+struct dots {
+	int x, y;
+	dots* next;
+};
+
+void init(void) {
+	glClearColor(0, 0, 0, 0);
+	glMatrixMode(GL_PROJECTION);
+	glLoadIdentity();
+	gluOrtho2D(0, 640, 0, 480);
+}
+
+void dot(int x, int y) {
+	glPointSize(3);
+	glBegin(GL_POINTS);
+	glVertex2f(x, y);
+	glEnd();
+}
+
+void makeLink() {
+	point = (struct dots*) malloc(sizeof(struct dots));
+	point->x = xpoint;
+	point->y = ypoint;
+	point->next = NULL;
+
+	if (head == NULL) {
+		head = point;
+		curr = point;
+	}
+	else {
+		curr->next = point;
+		curr = point;
+	}
+}
+
+void display() {
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	point = head;
+	if (cek) {
+		glColor3f(1, 1, 1);
+		while (point != NULL) {
+			dot(point->x, point->y);
+			point = point->next;
+		}
+	}
+	glutSwapBuffers();
+	glFlush();
+}
+
+
+void mouse(int button, int state, int x, int y) {
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	{
+		cek = true;
+		xpoint = x;
+		ypoint = (480 - y);
+		makeLink();
+	}
+	klik = true;
+	glutPostRedisplay();
+}
+
+int main(int argc, char** argv) {
+	glutInit(&argc, argv);
+	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGBA | GLUT_DEPTH);
+	glClearColor(0, 0, 0, 0);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glMatrixMode(GL_PROJECTION);
+	glutInitWindowSize(640, 480);
+	glutCreateWindow("Tugas_3_GRAFKOM_672017029");
+	init();
+	glutDisplayFunc(display);
+	glutMouseFunc(mouse);
+	glutMainLoop();
+	return 0;
+}
