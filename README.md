@@ -1,4 +1,4 @@
-PUNYA SUI
-JANGAN DILIHAT LIHAT
+# Grafkom-passionku-waifu-idamanku
+TR untuk Grafika Komputer
 
-# ONLY PEDOPHILE ALLOWED
+# GRUP YANG 100% BUKAN KUMPULAN ORANG ORANG PEDOPHILE, TRUST ME ;-) *wink* *wink*
