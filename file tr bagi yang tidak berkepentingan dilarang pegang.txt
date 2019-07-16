@@ -5,7 +5,7 @@
 #include <random>
 
 using namespace std;
-float gede = 20;
+float gede = 15;
 
 void summonkotak(int x,int y) {
 	float itung = glutGet(GLenum GLUT_WINDOW_HEIGHT) / 2;
