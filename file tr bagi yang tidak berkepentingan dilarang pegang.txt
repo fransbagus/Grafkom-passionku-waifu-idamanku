@@ -7,14 +7,14 @@
 using namespace std;
 float gede = 15;
 
-void summonkotak(int x,int y) {
+void summonkotak(int x, int y) {
 	float itung = glutGet(GLenum GLUT_WINDOW_HEIGHT) / 2;
 	glBegin(GL_POLYGON);
-	glColor3d(1,0,0);
-	glVertex2f(x - gede, itung - (y - gede - itung) );
-	glVertex2f(x - gede, itung - (y + gede - itung) );
-	glVertex2f(x + gede, itung - (y + gede - itung) );
-	glVertex2f(x + gede, itung - (y - gede - itung) );
+	glColor3d(1, 0, 0);
+	glVertex2f(x - gede, itung - (y - gede - itung));
+	glVertex2f(x - gede, itung - (y + gede - itung));
+	glVertex2f(x + gede, itung - (y + gede - itung));
+	glVertex2f(x + gede, itung - (y - gede - itung));
 	glEnd();
 	glFlush();
 }
@@ -35,7 +35,7 @@ void summonlingkaran(int x, int y) {
 	for (int i = 0; i < 360; i++)
 	{
 		float teta = i * 3.142 / 180;
-		glVertex2f(x+gede * cos(teta), itung - (y - itung) + gede * sin(teta));
+		glVertex2f(x + gede * cos(teta), itung - (y - itung) + gede * sin(teta));
 	}
 	glEnd();
 }
@@ -50,7 +50,7 @@ void Keyboard(unsigned char huruf, int x, int y)
 		cout << "Spawn Kotak dititik-(" << x << " , " << y << ")\n";
 		break;
 	case 's':
-		summonsegitiga(x,y);
+		summonsegitiga(x, y);
 		glFlush();
 		cout << "Spawn segitiga dititik-(" << x << " , " << y << ")\n";
 		break;
@@ -60,7 +60,7 @@ void Keyboard(unsigned char huruf, int x, int y)
 		cout << "Spawn lingkaran dititik-(" << x << " , " << y << ")\n";
 		break;
 	case 'z':
-		if (gede<25) {
+		if (gede < 25) {
 			gede += 5;
 			cout << "Ukuran dibesarkan 5 ukuran" << '\n';
 		}
@@ -69,7 +69,7 @@ void Keyboard(unsigned char huruf, int x, int y)
 		}
 		break;
 	case 'x':
-		if (gede>5) {
+		if (gede > 5) {
 			gede -= 5;
 			cout << "Ukuran dikecilkan 5 ukuran" << '\n';
 		}
@@ -79,9 +79,9 @@ void Keyboard(unsigned char huruf, int x, int y)
 		break;
 	}
 }
-void myDisplay(void){
+void myDisplay(void) {
 	glClear(GL_COLOR_BUFFER_BIT);
-	glClearColor(1,1,1,1);
+	glClearColor(1, 1, 1, 1);
 }
 
 void myInit(void)
@@ -91,14 +91,14 @@ void myInit(void)
 	glPointSize(8.0);
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();
-	gluOrtho2D(0, 500.0, 0, 500.0);
+	gluOrtho2D(0, 800, 0, 600);
 }
 
 void main(int argc, char** argv)
 {
 	glutInit(&argc, argv); //toolkit
 	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-	glutInitWindowSize(500, 500);
+	glutInitWindowSize(800, 600);
 	glutInitWindowPosition(100, 150);
 	glutCreateWindow("ashiyap");
 	glutDisplayFunc(myDisplay);
