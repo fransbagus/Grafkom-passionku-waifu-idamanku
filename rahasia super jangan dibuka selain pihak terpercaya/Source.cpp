@@ -91,9 +91,9 @@ b2Body* add3angle(int x, int y, int w, int h, bool dyn = true) { //add bodydef
 
 	//attach polygon using fixture def
 	b2Vec2 vertices[3];
-	vertices[0].Set(w * p2m /2, h * p2m /2);
-	vertices[1].Set(w * p2m *2, h * p2m /2);
-	vertices[2].Set(w * p2m, h * p2m *2);
+	vertices[0].Set(0.0f, 0.0f);
+	vertices[1].Set(1.0f, 0.0f);
+	vertices[2].Set(0.0f, 1.0f);
 	int32 count = 3;
 
 	b2PolygonShape segitiga;
@@ -145,9 +145,10 @@ void draw3angle(b2Vec2* points, b2Vec2 center, float angle) {
 	glTranslatef(center.x * m2p, center.y * m2p, 0);
 	glRotatef(angle * 180.0 / PI, 0, 0, 1);
 	glBegin(GL_POLYGON);
-	glVertex2f(points[0].x * m2p, points[0].y * m2p);
-	glVertex2f(points[1].x * m2p, points[1].y * m2p);
-	glVertex2f(points[2].x * m2p, points[2].y * m2p);
+
+	glVertex2f(points[0].x * m2p - 6.75, points[0].y * m2p - 6.75);
+	glVertex2f(points[1].x * m2p - 6.75, points[1].y * m2p - 6.75);
+	glVertex2f(points[2].x * m2p - 6.75, points[2].y * m2p - 6.75);
 
 
 	glEnd();
@@ -232,7 +233,6 @@ void display() {
 	b2Body* tmp = world->GetBodyList();
 	b2Vec2 points[4];
 	while (tmp) {
-		cout << ((b2PolygonShape*)tmp->GetFixtureList()->GetShape())->GetVertexCount() << '\n';
 		if (tmp->GetFixtureList()->GetShape()->GetType() == 0) {
 			b2CircleShape* c = ((b2CircleShape*)tmp->GetFixtureList()->GetShape());
 			drawCircle(tmp->GetWorldCenter(), c->m_radius, tmp->GetAngle());
