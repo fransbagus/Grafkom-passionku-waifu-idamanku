@@ -1,4 +1,3 @@
-
 class lingkaran {
 private:
 	const float m2p = 20; //meter to pixel

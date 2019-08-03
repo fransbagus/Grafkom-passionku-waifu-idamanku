@@ -1,7 +1,6 @@
 // _TugasRancang.cpp : Defines the entry point for the console application.
 //
 
-
 #include "windows.h"
 #include "stdlib.h"
 #include "glut.h"
@@ -10,6 +9,8 @@
 #include "kotak.h"
 #include "lingkaran.h"
 #include "segitiga.h"
+#include "imageloader.h"
+
 using namespace std;
 const float WIDTH = 800.0;
 const float HEIGHT = 600.0;
@@ -18,21 +19,37 @@ const float m2p = 20; //meter to pixel
 const float p2m = 1 / m2p; //pixel to meter
 const float PI = 3.14;
 
+GLuint id;
 bool mouseDown;
 char keypress = 'a';
-
-float32 timeStep = 1 / 240.0;
+float32 timeStep = 1 / 1440.0;
 int32 velocityIteration = 8;
 int32 positionIteration = 3;
 
 //define physics world
-b2Vec2 gravity(0.0f, 9.81f);
-b2Vec2 gravity2(0.0f, 0.0f);
-bool cek = false;
-b2World* world = new b2World(gravity2); //pointer, dynamically allocated
-kotak kotakk(world);
+b2Vec2 gravity(0.0f, 0.0f);
+b2Vec2 gravity2(0.0f, 9.81f);
+b2World* world = new b2World(gravity); //pointer, dynamically allocated
+
 lingkaran lingkar(world);
 segitiga segitigaa(world);
+kotak kotakk(world);
+
+
+
+GLuint loadTexture(Image* image) {
+	GLuint textureId;
+	glGenTextures(1, &textureId);
+	glBindTexture(GL_TEXTURE_2D, textureId);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, image->width, image->height, 0, GL_RGB, GL_UNSIGNED_BYTE, image->pixels);
+	return textureId;
+}
+
+void initRendering() {
+	Image* image = loadBMP("spongebob.bmp");
+	id = loadTexture(image);
+	delete image;
+}
 
 void init()
 {
@@ -76,7 +93,6 @@ void handleKeypress(unsigned char key, int x, int y) {
 		glColor3f(1, 1, 1);
 		segitigaa.add3angle(x, y, 20, 20, true);
 
-
 		world->Step(timeStep, velocityIteration, positionIteration);
 
 		glutSwapBuffers();
@@ -84,7 +100,12 @@ void handleKeypress(unsigned char key, int x, int y) {
 		break;
 	case'z':
 	case'Z':
-		world->SetGravity(gravity);
+		world->SetGravity(gravity2); 
+		b2Body* tmp = world->GetBodyList();
+		while(tmp) {
+			tmp->ApplyForceToCenter(b2Vec2(0, 1), true);
+			tmp = tmp->GetNext();
+		}
 		break;
 	}
 }
@@ -106,6 +127,7 @@ void display() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();
 	//untuk gambar semua bentuk
+
 	b2Body* tmp = world->GetBodyList();
 	b2Vec2 points[4];
 	while (tmp) {
@@ -119,7 +141,7 @@ void display() {
 				points[i] = ((b2PolygonShape*)tmp->GetFixtureList()->GetShape())->GetVertex(i);
 			}
 			if (((b2PolygonShape*)tmp->GetFixtureList()->GetShape())->GetVertexCount() == 4) {
-				kotakk.drawSquare(points, tmp->GetWorldCenter(), tmp->GetAngle());
+				kotakk.drawSquare(points, tmp->GetWorldCenter(), tmp->GetAngle(),id);
 			}
 			else {
 				segitigaa.draw3angle(points, tmp->GetWorldCenter(), tmp->GetAngle());
@@ -141,6 +163,7 @@ int main(int argc, char** argv)
 	glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB | GLUT_DEPTH);
 	glutInitWindowSize(800, 600);
 	glutCreateWindow("Tugas Rancang Anti Pedofil pedofil club");
+	initRendering();
 	init();
 	glutDisplayFunc(display);
 	glutMouseFunc(mouse);
