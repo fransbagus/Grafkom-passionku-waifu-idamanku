@@ -13,12 +13,12 @@
 #include <stdio.h>
 
 using namespace std;
-const float WIDTH = 800.0;
-const float HEIGHT = 600.0;
+#define WIDTH 800.0;
+#define HEIGHT 600.0;
 
-const float m2p = 20; //meter to pixel
-const float p2m = 1 / m2p; //pixel to meter
-const float PI = 3.14;
+#define m2p 20; 						//meter to pixel
+#define p2m (1 / m2p); 						//pixel to meter
+#define PI  3.14;
 
 GLuint id;
 bool mouseDown;
