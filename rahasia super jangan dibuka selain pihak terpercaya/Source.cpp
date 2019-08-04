@@ -10,6 +10,7 @@
 #include "lingkaran.h"
 #include "segitiga.h"
 #include "imageloader.h"
+#include <stdio.h>
 
 using namespace std;
 const float WIDTH = 800.0;
@@ -34,6 +35,8 @@ b2World* world = new b2World(gravity); //pointer, dynamically allocated
 lingkaran lingkar(world);
 segitiga segitigaa(world);
 kotak kotakk(world);
+b2MouseJoint* m_mouseJoint;
+b2Body* m_groundBody;
 
 
 
@@ -60,10 +63,10 @@ void init()
 	glViewport(0, WIDTH, 0, HEIGHT);
 	glMatrixMode(GL_MODELVIEW);
 	glClearColor(0.0, 0.0, 0.0, 1.0);
-	kotakk.addRectangle(400, 600, 800, 20, false);
-	kotakk.addRectangle(400, 0, 800, 20, false);
-	kotakk.addRectangle(0, 300, 20, 600, false);
-	kotakk.addRectangle(800, 300, 20, 600, false);
+	kotakk.addRectangle(400, 600, 800, 0.1, false);
+	kotakk.addRectangle(400, 0, 800, 0.1, false);
+	kotakk.addRectangle(0, 300, 0.1, 600, false);
+	kotakk.addRectangle(800, 300, 0.1, 600, false);
 	glutPostRedisplay();
 }
 
@@ -110,19 +113,70 @@ void handleKeypress(unsigned char key, int x, int y) {
 	}
 }
 
+
 void mouse(int button, int state, int x, int y)
 {
-	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
-	{
-		mouseDown = true;
-	}else{
-		mouseDown = false;
+	try {
+		if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+		{
+			b2Body* tmp = world->GetBodyList();
+			b2Vec2 target(x * p2m, y * p2m);
+
+			b2BodyDef bodyDef;
+			m_groundBody = world->CreateBody(&bodyDef);
+
+			b2CircleShape dynCircle;
+
+			b2FixtureDef fixtureDef;
+			fixtureDef.shape = &dynCircle;
+			m_groundBody->CreateFixture(&fixtureDef);
+
+			while (tmp) {
+				b2Vec2 center = tmp->GetWorldCenter();
+				if (center.x * m2p - 10 < x && x < center.x * m2p + 10) {
+					if (center.y * m2p - 10 < y && y < center.y * m2p + 10) {
+						b2MouseJointDef md;
+						md.bodyA = m_groundBody;
+						md.bodyB = tmp;
+						md.target = target;
+						md.maxForce = 10;
+						md.frequencyHz = 5;
+						md.dampingRatio = 0.9;
+						md.collideConnected = true;
+						m_mouseJoint = (b2MouseJoint*)world->CreateJoint(&md);
+						mouseDown = true;
+						tmp->SetAwake(true);
+						cout << "didalam" << '\n';
+						break;
+					}
+				}
+				tmp = tmp->GetNext();
+			}
+		}
+		else {
+			if (mouseDown) {
+				world->DestroyJoint(m_mouseJoint);
+				m_mouseJoint = NULL;
+			}
+			mouseDown = false;
+		}
+
+
+		printf("%d %d %d \n", state, x, y);
 	}
-
-
-	printf("%d %d %d \n", state, x, y);
+		catch(exception e) {
+	}
 }
 
+void mousemotion(int x, int y) {
+	b2Vec2 target(x * p2m, y * p2m);
+	if (mouseDown) {
+		if (m_mouseJoint)
+		{
+			m_mouseJoint->SetTarget(target);
+		}
+	}
+}
 void display() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();
@@ -167,6 +221,7 @@ int main(int argc, char** argv)
 	init();
 	glutDisplayFunc(display);
 	glutMouseFunc(mouse);
+	glutMotionFunc(mousemotion);
 	glutKeyboardFunc(handleKeypress);
 
 	world->Step(timeStep, velocityIteration, positionIteration); //update frame

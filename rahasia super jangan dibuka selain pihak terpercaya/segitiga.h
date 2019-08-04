@@ -19,8 +19,6 @@ b2Body* segitiga::add3angle(int x, int y, float w, float h, bool dyn) { //add bo
 		bodyDef.type = b2_dynamicBody;
 	}
 	bodyDef.position.Set(x * p2m, y * p2m);
-	bodyDef.allowSleep = true;
-	bodyDef.awake = true;
 	b2Body* body = world->CreateBody(&bodyDef);
 
 	//attach polygon using fixture def
@@ -51,8 +49,8 @@ void segitiga::draw3angle(b2Vec2* points, b2Vec2 center, float angle) {
 	glRotatef(angle * 180.0 / PI, 0, 0, 1);
 	glBegin(GL_POLYGON);
 
-	glVertex2f(points[0].x * m2p, points[0].y * m2p);
-	glVertex2f(points[1].x * m2p, points[1].y * m2p);
+	glVertex2f(points[0].x * m2p, points[0].y * m2p-3.5);
+	glVertex2f(points[1].x * m2p, points[1].y * m2p-3.5);
 	glVertex2f(points[2].x * m2p, points[2].y * m2p);
 
 	glEnd();
