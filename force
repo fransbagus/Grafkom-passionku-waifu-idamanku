@@ -1,0 +1,8 @@
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	{
+		mouseDown = true;
+			b2Body* tmp = world->GetBodyList();
+			b2Vec2 mouse(x, y-800);
+			mouse -= (m2p * tmp->GetWorldCenter());
+			tmp->ApplyForceToCenter(mouse, true);
+      }
