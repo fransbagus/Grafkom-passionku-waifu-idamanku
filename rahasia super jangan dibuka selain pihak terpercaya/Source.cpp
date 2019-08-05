@@ -13,12 +13,12 @@
 #include <stdio.h>
 
 using namespace std;
-const float WIDTH = 800.0;
-const float HEIGHT = 600.0;
+#define WIDTH 800.0;
+#define HEIGHT 600.0;
 
-const float m2p = 20; //meter to pixel
-const float p2m = 1 / m2p; //pixel to meter
-const float PI = 3.14;
+#define m2p 20; 						//meter to pixel
+#define p2m (1 / m2p); 						//pixel to meter
+#define PI  3.14;
 
 GLuint id;
 bool mouseDown;
@@ -27,10 +27,9 @@ float32 timeStep = 1 / 1440.0;
 int32 velocityIteration = 8;
 int32 positionIteration = 3;
 
-//define physics world
-b2Vec2 gravity(0.0f, 0.0f);
-b2Vec2 gravity2(0.0f, 9.81f);
-b2World* world = new b2World(gravity); //pointer, dynamically allocated
+b2Vec2 gravity(0.0f, 0.0f);					//define physics world
+b2Vec2 gravity2(0.0f, 9.81f);					//  |
+b2World* world = new b2World(gravity); 				//  |- pointer, dynamically allocated
 
 lingkaran lingkar(world);
 segitiga segitigaa(world);
@@ -57,9 +56,8 @@ void initRendering() {
 void init()
 {
 	glMatrixMode(GL_PROJECTION);
-	//menyesuaikan sistem koordinat opengl
-	glOrtho(0, WIDTH, HEIGHT, 0, -1, 1);
-	//gluOrtho2D(0, WIDTH, HEIGHT, 0);
+	glOrtho(0, WIDTH, HEIGHT, 0, -1, 1);			//menyesuaikan sistem koordinat opengl
+
 	glViewport(0, WIDTH, 0, HEIGHT);
 	glMatrixMode(GL_MODELVIEW);
 	glClearColor(0.0, 0.0, 0.0, 1.0);
@@ -177,10 +175,10 @@ void mousemotion(int x, int y) {
 		}
 	}
 }
-void display() {
+void display() {					//untuk gambar semua bentuk
 	glClear(GL_COLOR_BUFFER_BIT);
 	glLoadIdentity();
-	//untuk gambar semua bentuk
+	
 
 	b2Body* tmp = world->GetBodyList();
 	b2Vec2 points[4];
@@ -224,13 +222,8 @@ int main(int argc, char** argv)
 	glutMotionFunc(mousemotion);
 	glutKeyboardFunc(handleKeypress);
 
-	world->Step(timeStep, velocityIteration, positionIteration); //update frame
+	world->Step(timeStep, velocityIteration, positionIteration); 	//update frame
 	glutSwapBuffers();
-
-	/*
-	glutMotionFunc(mouseMotion);
-	glutReshapeFunc(handleResize);
-	glutTimerFunc(25, update, 0);*/
 
 	glutMainLoop();
 	return 0;
