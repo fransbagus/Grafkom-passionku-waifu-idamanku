@@ -9,5 +9,5 @@ Merupakan Repository untuk memenuhi Tugas Rancang yang di isukan oleh Pratyaksa 
 
 ## Dependencies
 
-- Visual Studio 20xx
+- Visual Studio 2019
 - [Box2D](https://box2d.org/)
