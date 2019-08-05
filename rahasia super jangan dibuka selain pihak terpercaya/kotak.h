@@ -5,15 +5,15 @@
 
 class kotak {
 private:
-	const float m2p = 20; //meter to pixel
+	const float m2p = 100; //meter to pixel
 	const float p2m = 1 / m2p; //pixel to meter
 	const float PI = 3.14;
+	b2World* world;
 public:
 	b2Body* addRectangle(int x, int y, int w, int h, bool dyn = true);
 	void drawSquare(b2Vec2* points, b2Vec2 center, float angle, GLuint id);
-	b2World* world;
 	kotak(b2World* world2) {
-		world = world2;
+		this->world = world2;
 	};
 };
 b2Body* kotak::addRectangle(int x, int y, int w, int h, bool dyn) { //add bodydef
@@ -31,7 +31,7 @@ b2Body* kotak::addRectangle(int x, int y, int w, int h, bool dyn) { //add bodyde
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 0.5f;
+	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.1f;
 	fixtureDef.restitution = 0.15f;
 	body->CreateFixture(&fixtureDef);

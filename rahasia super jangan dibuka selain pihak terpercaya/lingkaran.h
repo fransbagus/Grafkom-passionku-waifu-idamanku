@@ -1,6 +1,6 @@
 class lingkaran {
 private:
-	const float m2p = 20; //meter to pixel
+	const float m2p = 100; //meter to pixel
 	const float p2m = 1 / m2p; //pixel to meter
 	const float PI = 3.14;
 	b2World* world;
@@ -8,7 +8,7 @@ public:
 	b2Body* addCircle(int x, int y, int r, bool dyn = true);
 	void drawCircle(b2Vec2 center, float r, float angle);
 	lingkaran(b2World* world2) {
-		world = world2;
+		this->world = world2;
 	};
 };
 
@@ -29,7 +29,7 @@ b2Body* lingkaran::addCircle(int x, int y, int r, bool dyn) {
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynCircle;
-	fixtureDef.density = 0.5f;
+	fixtureDef.density = 1.0f;
 	fixtureDef.friction = 0.1f;
 	fixtureDef.restitution = 0.15f;
 	body->CreateFixture(&fixtureDef);
