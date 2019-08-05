@@ -1,4 +1,13 @@
-# Grafkom-passionku-waifu-idamanku
-TR untuk Grafika Komputer
+# Grafkom Dosen Tugas Rancang
 
-# GRUP YANG 100% BUKAN KUMPULAN ORANG ORANG PEDOPHILE, TRUST ME ;-) *wink* *wink*
+Merupakan Repository untuk memenuhi Tugas Rancang yang di isukan oleh Pratyaksa Ocsa 
+
+**Penulis :**
+* Rayson Tan    (672017066)
+* Fransiscus Xaverius Bagus Caesar    (672017029)
+* Davin Kurnia Hiuredy (672017018)
+
+## Dependencies
+
+- Visual Studio 2019
+- [Box2D](https://box2d.org/)
